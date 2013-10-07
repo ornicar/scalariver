@@ -17,9 +17,17 @@ private[scalariver] object Format {
 
     def preferences = new FormattingPreferences(
       AllPreferences.preferencesByKey map {
-        case (key, descriptor) ⇒ descriptor -> (req param key flatMap { v ⇒
-          descriptor.preferenceType.parseValue(v).right.toOption
-        } getOrElse descriptor.defaultValue)
+        case (key, descriptor) ⇒ {
+          val setting = descriptor match {
+            case desc: BooleanPreferenceDescriptor ⇒ 
+              Some(if (req.param(key).isDefined) "true" else "false")
+            case desc => req param key 
+          }
+          val parsed = setting flatMap { v ⇒
+            descriptor.preferenceType.parseValue(v).right.toOption
+          } getOrElse descriptor.defaultValue
+          descriptor -> parsed
+        }
       } toMap
     )
 
