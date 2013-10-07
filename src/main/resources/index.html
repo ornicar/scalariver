@@ -1,11 +1,116 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<title>Scalariver</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta>
+<title>Scalariver scala formatter</title>
+<link rel="stylesheet" href="bootstrap.min.css" />
+<link rel="stylesheet" href="main.css" />
 </head>
 <body>
-<form action="format" method="post">
-  <textarea style="width: 800px; height: 700px" name="source"></textarea>
-  <button type="submit">Format</button>
-</form>
+<div id="wrap">
+  <div class="container">
+    <div class="page-header">
+      <h1>scalariver</h1>
+      <p class="lead">Scalariform HTTP server, for faster formatting</p>
+    </div>
+    <form role="form" class="form-horizontal form-format" action="/" method="post">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="form-group">
+            <label for="source">Source code</label>
+            <textarea class="form-control source" rows=23 name="source"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Format</button>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="container">
+            <div class="form-group">
+              <label>Preferences</label>
+              <select class="form-control" name="scalaVersion" style="margin-bottom: 7px;">
+                <option value="2.9">Scala 2.9</option>
+                <option value="2.10" selected>Scala 2.10</option>
+                <option value="2.11">Scala 2.11</option>
+              </select>
+              <select class="form-control" name="indentSpaces">
+                <option value="1">Indent with 1 space</option>
+                <option value="2" selected>Indent with 2 spaces</option>
+                <option value="4">Indent with 4 spaces</option>
+                <option value="6">Indent with 6 spaces</option>
+                <option value="8">Indent with 8 spaces</option>
+              </select>
+              <div class="checkbox">
+                <label><input name="alignParameters" type="checkbox"> Align parameters</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="alignSingleLineCaseStatements" type="checkbox"> Align single line case statements</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="compactControlReadability" type="checkbox"> Compact control readability</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="compactStringConcatenation" type="checkbox"> Compact string concatenation</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="doubleIndentClassDeclaration" type="checkbox"> Double indent class declaration</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="formatXml" type="checkbox" checked> Format XML</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="indentLocalDefs" type="checkbox"> Indent local defs</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="indentPackageBlocks" type="checkbox" checked> Indent package blocks</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="indentWithTabs" type="checkbox"> Indent with tabs</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="multilineScaladocCommentsStartOnFirstLine" type="checkbox"> Scaladoc comments start on first line</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="preserveDanglingCloseParenthesis" type="checkbox"> Preserve dangling close parenthesis</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="placeScaladocAsterisksBeneathSecondAsterisk" type="checkbox"> Scaladoc asterisks beneath second asterisk</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="preserveSpaceBeforeArguments" type="checkbox"> Preserve space before arguments</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="rewriteArrowSymbols" type="checkbox"> Rewrite arrow symbols</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="spaceBeforeColon" type="checkbox"> Space before colon</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="spaceInsideBrackets" type="checkbox"> Space inside brackets</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="spaceInsideParentheses" type="checkbox"> Space inside parentheses</label>
+              </div>
+              <div class="checkbox">
+                <label><input name="spacesWithinPatternBinders" type="checkbox"> Spaces within pattern binders</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="footer">
+  <div class="container">
+    <p class="text-muted text-center credit">
+    <a href="http://github.com/ornicar/scalariver">Scalariver on Github</a>
+    |
+    <a href="https://github.com/ornicar/scalariver#server-http-api">HTTP API</a>
+    |
+    <a href="https://github.com/ornicar/scalariver#using-your-private-server">Setup your own formatting server</a>
+    </p>
+  </div>
+</div>
 </body>
 </html>
