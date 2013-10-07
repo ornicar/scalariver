@@ -57,14 +57,12 @@ export SCALARIVER_URL="http://localhost:8098"
 
 ### Use with Vim
 
-#### curl and HTTP API
-
+Using curl and HTTP API
 ```vim
 nmap <leader>f :% !curl -s river.scalex.org --data-urlencode source@%<cr>
 ```
 
-#### **Or** using the scalariver client
-
+**Or** using the scalariver client
 ```vim
 nmap <leader>F :% !/path/to/scalariver %<cr>
 ```
@@ -98,8 +96,8 @@ curl scalariver.org \
 
 ### Credits
 
-[tiscaf](https://github.com/gnieh/tiscaf) - a minimalist and dependency-less HTTP server for scala
-[scalariform](https://github.com/mdr/scalariform) - best scala formatter in the wild
+- [scalariform](https://github.com/mdr/scalariform) - best scala formatter in the wild
+- [tiscaf](https://github.com/gnieh/tiscaf) - a minimalist and dependency-less HTTP server for scala
 
 ### Contribute
 
