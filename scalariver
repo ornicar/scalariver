@@ -39,12 +39,12 @@ rescue Timeout::Error
   raise "Could not connect to #{url}"
 end
 
-begin
+if ARGV.empty? 
+  source = STDIN.read
+else 
   source = File.read(File.expand_path(ARGV[0]))
-rescue => e
-  puts "Empty or invalid input file"
-  exit 1
 end
+
 request = Net::HTTP::Post.new("/")
 request.set_form_data(:source => source)
 response = http(SCALARIVER_URL, request)
