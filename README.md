@@ -34,6 +34,12 @@ This `scalariver` script takes a file argument,
 sends an HTTP request to the scalariform server,
 and prints the formatted scala code to stdout.
 
+If no file argument is given, scalariven will read from stdin:
+
+```sh
+echo src/main/scala/Scalariver.scala | ./scalariver
+```
+
 ### Using your private server
 
 There is an instance of scalariver deployed on http://river.scalex.org for everybody's use.
@@ -47,9 +53,9 @@ Clone this repository, then run:
 sbt run 8098
 ```
 
-It's enough to get the server running on http://localhost:8098.
+It's enough to get the server running on [http://localhost:8098.](http://localhost:8098).
 
-To tell the `scalariver` client to use your private server:
+Now tell the `scalariver` client to use your private server:
 
 ```sh
 export SCALARIVER_URL="http://localhost:8098"
