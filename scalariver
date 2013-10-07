@@ -10,7 +10,7 @@ require 'uri'
 
 # To use your own scalariver instance:
 # export SCALARIVER_URL="http://my-scalariver-instance"
-SCALARIVER_URL = URI(ENV.key?("SCALARIVER_URL") ? URI(ENV["SCALARIVER_URL"]) : "http://scalariver.local")
+SCALARIVER_URL = URI(ENV.key?("SCALARIVER_URL") ? URI(ENV["SCALARIVER_URL"]) : "http://river.scalex.org")
 USER_AGENT = "Scalariver CLI"
 
 def http_connection(uri)

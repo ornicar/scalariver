@@ -1,15 +1,32 @@
-Scalariform HTTP server
+## A server for scalariform
 
-### Motivation
+[Scalariform](https://github.com/mdr/scalariform) is a great tool for formatting scala code,
+but the JVM warmup makes it too slow for a CLI application.
 
-Scalariform is a great tool for formatting scala code. 
-But JVM warmup is slow! making it improper to CLI tools.
+By using a client/server architecture, we can fix it.
 
-By running scalariform in an HTTP server, we can get much faster formatting.
+### Benchmark
+
+```sh
+time java -jar ~/bin/scalariform.jar src/main/scala/Scalariver.scala --stdout  
+1.99s user 0.07s system 128% cpu 1.603 total
+```
+Scalariform CLI = 1.6 seconds
+
+```sh
+time ./scalariver src/main/scala/Scalariver.scala
+0.06s user 0.00s system 98% cpu 0.064 total
+```
+Scalariver CLI = 0.06 seconds
+
+Scalariver is 25 times faster than scalariform.
 
 ### Try it
 
+Get the client, make it executable and run it on some scala file.
 ```sh
+wget https://raw.github.com/ornicar/scalariver/master/scalariver
+chmod +x scalariver
 ./scalariver src/main/scala/Scalariver.scala
 ```
 
@@ -17,12 +34,10 @@ This `scalariver` script takes a file argument,
 sends an HTTP request to the scalariform server,
 and prints the formatted scala code to stdout.
 
-### Using public server
+### Using your private server
 
 There is an instance of scalariver deployed on http://river.scalex.org for everybody's use.
 By default, the `scalariver` CLI client will use it. 
-
-### Using your private server
 
 If you care about code privacy, or are looking for better response time,
 then you should run your own scalariver instance.
@@ -40,7 +55,21 @@ To tell the `scalariver` client to use your private server:
 export SCALARIVER_URL="http://localhost:8098"
 ```
 
-### API
+### Use with Vim
+
+#### curl and HTTP API
+
+```vim
+nmap <leader>f :% !curl -s river.scalex.org --data-urlencode source@%<cr>
+```
+
+#### **Or** using the scalariver client
+
+```vim
+nmap <leader>F :% !/path/to/scalariver %<cr>
+```
+
+### Server HTTP API
 
 The only entry point is a `POST` request on `/`.
 
@@ -65,36 +94,6 @@ curl scalariver.org \
   --data-urlencode source@src/main/scala/Scalariver.scala \
   -d scalaVersion=2.11 \
   -d rewriteArrowSymbols=true
-```
-
-### Benchmark
-
-Quick and dirty: 
-
-```sh
-time java -jar ~/bin/scalariform.jar src/main/scala/Scalariver.scala --stdout  
-1.99s user 0.07s system 128% cpu 1.603 total
-```
-
-```sh
-time ./scalariver src/main/scala/Scalariver.scala
-0.06s user 0.00s system 98% cpu 0.064 total
-```
-
-Scalariver is 25 times faster than scalariform.
-
-### Use with Vim
-
-#### curl and HTTP API
-
-```vim
-nmap <leader>f :% !curl -s river.scalex.org --data-urlencode source@%<cr>
-```
-
-#### **Or** using the scalariver client
-
-```vim
-nmap <leader>F :% !/path/to/scalariver %<cr>
 ```
 
 ### Credits
