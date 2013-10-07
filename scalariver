@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+
+# Command line client for scalariver
+# Takes a file name, issues an HTTP request to the server
+# and prints the formatted scala source to stdout
+# Usage: scalariver path/to/File.scala
+
+require 'net/https'
+require 'uri'
+
+# To use your own scalariver instance:
+# export SCALARIVER_URL="http://my-scalariver-instance"
+SCALARIVER_URL = URI(ENV.key?("SCALARIVER_URL") ? URI(ENV["SCALARIVER_URL"]) : "http://scalariver.local")
+USER_AGENT = "Scalariver CLI"
+
+def http_connection(uri)
+  env = ENV['http_proxy'] || ENV['HTTP_PROXY']
+  connection = if env
+                 proxy = URI(env)
+                 Net::HTTP::Proxy(proxy.host, proxy.port).new(uri.host, uri.port)
+               else
+                 Net::HTTP.new(uri.host, uri.port)
+               end
+  if uri.scheme == "https"
+    connection.use_ssl = true
+    connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  end
+  connection.open_timeout = 5
+  connection.read_timeout = 5
+  connection
+end
+
+def http(url, request)
+  request['User-Agent'] = USER_AGENT
+  http_connection(url).start do |http|
+    http.request request
+  end
+rescue Timeout::Error
+  raise "Could not connect to #{url}"
+end
+
+begin
+  source = File.read(File.expand_path(ARGV[0]))
+rescue => e
+  puts "Empty or invalid input file"
+  exit 1
+end
+request = Net::HTTP::Post.new("/")
+request.set_form_data(:source => source)
+response = http(SCALARIVER_URL, request)
+case response.code
+when "200"
+  print response.body
+else
+  $stderr.puts response.body if $stdin.tty?
+  print source
+end
