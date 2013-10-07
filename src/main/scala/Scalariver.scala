@@ -22,8 +22,6 @@ object ScalariverServer extends HServer with App {
 object ScalariformApp extends HApp {
 
   override def keepAlive = false
-  override def chunked = false
-  override def buffered = false
   override def gzip = false
   override def tracking = HTracking.NotAllowed
 
@@ -47,13 +45,11 @@ object ScalariformLet extends HSimpleLet {
         .write(e.getMessage)
     }
   }
-
 }
 
-/** Simply servers the resource from the classpath */
 object StaticApp extends HApp {
 
-  override def buffered: Boolean = true // ResourceLet needs buffered or chunked be set
+  override def buffered = true // ResourceLet needs buffered or chunked be set
 
   def resolve(req: HReqData) = Some(StaticLet) // generates 404 if resource not found
 }
