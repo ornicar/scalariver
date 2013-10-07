@@ -1,5 +1,6 @@
 package com.github.ornicar.scalariver
 
+import scala.util.{ Try, Success, Failure }
 import tiscaf._
 
 object ScalariverServer extends HServer with App {
@@ -26,22 +27,19 @@ object ScalariformApp extends HApp {
   override def gzip = false
   override def tracking = HTracking.NotAllowed
 
-  def resolve(req: HReqData): Option[HLet] = 
+  def resolve(req: HReqData): Option[HLet] =
     if (req.method == HReqType.PostData) Some(ScalariformLet) else None
 }
 
 /** Serves the current server time */
 object ScalariformLet extends HSimpleLet {
 
-  import scalariform.formatter.ScalaFormatter
-  import scala.util.{ Try, Success, Failure }
-
   def act(talk: HTalk) {
-    val source = talk.req.softParam("source")
-    Try(ScalaFormatter format source) match {
+    Format(talk.req) match {
       case Success(x) ⇒ talk
         .setContentType("text/plain")
         .setContentLength(x.length)
+        .setStatus(HStatus.OK)
         .write(x)
       case Failure(e) ⇒ talk
         .setStatus(HStatus.BadRequest)
