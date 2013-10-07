@@ -1,0 +1,4 @@
+# sbt specific
+dist/*
+target/
+project/boot/
