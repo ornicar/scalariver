@@ -58,6 +58,18 @@ More complex example:
     -d scalaVersion=2.11 \
     -d rewriteArrowSymbols=true
 
+### Benchmark
+
+Quick and dirty: 
+
+  time java -jar ~/bin/scalariform.jar src/main/scala/Scalariver.scala --stdout  
+  1.99s user 0.07s system 128% cpu 1.603 total
+
+  time ./scalariver src/main/scala/Scalariver.scala
+  0.06s user 0.00s system 98% cpu 0.064 total
+
+Scalariver is 25 times faster than scalariform.
+
 ### Credits
 
 [tiscaf](link to tiscaf) - a minimalist and dependency-less HTTP server for scala
