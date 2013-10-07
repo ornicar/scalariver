@@ -27,6 +27,7 @@ object ScalariformApp extends HApp {
 
   override def keepAlive = false
   override def gzip = false
+  override def chunked = false
   override def tracking = HTracking.NotAllowed
 
   def resolve(req: HReqData): Option[HLet] =
@@ -38,11 +39,15 @@ object ScalariformLet extends HSimpleLet {
 
   def act(talk: HTalk) {
     Format(talk.req) match {
-      case Success(x) ⇒ talk
-        .setContentType("text/plain")
-        .setContentLength(x.length)
+      case Success(x) ⇒ {
+        val bytes = x getBytes "UTF-8"
+        talk
+        .setContentType("text/plain; charset=UTF-8")
+        .setCharacterEncoding("UTF-8")
+        .setContentLength(bytes.size)
         .setStatus(HStatus.OK)
-        .write(x)
+        .write(bytes)
+      }
       case Failure(e) ⇒ talk
         .setStatus(HStatus.BadRequest)
         .setContentLength(e.getMessage.length)
