@@ -5,10 +5,14 @@ import tiscaf._
 
 object ScalariverServer extends HServer with App {
 
-  def apps = Seq(ScalariformApp, StaticApp)
-  def ports = Set(8080)
-  override protected def name = "scalariver"
-  override protected def maxPostDataLength = 1024 * 8
+  def port = args.toIndexedSeq lift 0 flatMap { p =>
+    Try(p.toInt).toOption
+  } getOrElse 8098
+
+  val apps = Seq(ScalariformApp, StaticApp)
+  val ports = Set(port)
+  override protected val name = "scalariver"
+  override protected val maxPostDataLength = 1024 * 8
   // do not start the stop thread
   override protected def startStopListener {}
 

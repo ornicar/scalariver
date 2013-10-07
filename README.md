@@ -17,7 +17,7 @@ and prints the formatted scala code to stdout.
 
 ### Using public server
 
-There is an instance of scalariver deployed on http://scalariver.org for everybody's use.
+There is an instance of scalariver deployed on http://river.scalex.org for everybody's use.
 By default, the `scalariver` CLI client will use it. 
 
 ### Using your private server
@@ -38,7 +38,7 @@ To tell the `scalariver` client to use your private server:
 
 The only entry point is a `POST` request on `/`.
 
-  curl scalariver.org -d source="class Foo { }"
+  curl river.scalex.org -d source="class Foo { }"
 
 It accepts the following optional parameters:
 
