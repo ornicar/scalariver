@@ -38,7 +38,8 @@ object ScalariformApp extends HApp {
 object ScalariformLet extends HSimpleLet {
 
   def act(talk: HTalk) {
-    Format(talk.req) match {
+    val f = new Format(talk.req) 
+    f.apply match {
       case Success(x) ⇒ {
         val bytes = x getBytes "UTF-8"
         talk
@@ -48,10 +49,13 @@ object ScalariformLet extends HSimpleLet {
         .setStatus(HStatus.OK)
         .write(bytes)
       }
-      case Failure(e) ⇒ talk
+      case Failure(e) ⇒ {
+        val out = if (f.forceOutput) f.source else e.getMessage
+        talk
         .setStatus(HStatus.BadRequest)
-        .setContentLength(e.getMessage.length)
-        .write(e.getMessage)
+        .setContentLength(out.length)
+        .write(out)
+      }
     }
   }
 }
