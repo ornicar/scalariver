@@ -9,10 +9,11 @@ require 'net/https'
 require 'uri'
 require 'optparse'
 
-# To use your own scalariver instance:
-# export SCALARIVER_URL="http://my-scalariver-instance"
-SCALARIVER_URL = URI(ENV.key?("SCALARIVER_URL") ? URI(ENV["SCALARIVER_URL"]) : "http://river.scalex.org")
-USER_AGENT = "Scalariver CLI"
+# To use your own scalariver instance, add this to your .bashrc or .zshrc:
+# export SCALARIVER_URL="http://localhost:8098"
+# or pass it as an option:
+# scalariver --url=http://localhost:8098
+DEFAULT_URL = "http://river.scalex.org"
 
 def http_connection(uri)
   env = ENV['http_proxy'] || ENV['HTTP_PROXY']
@@ -32,7 +33,7 @@ def http_connection(uri)
 end
 
 def http(url, request)
-  request['User-Agent'] = USER_AGENT
+  request['User-Agent'] = "Scalariver CLI"
   http_connection(url).start do |http|
     http.request request
   end
@@ -41,7 +42,19 @@ rescue Timeout::Error
 end
 
 options = {}
+options['url'] = ENV["SCALARIVER_URL"] || DEFAULT_URL
+booleanPreferences = [ 'alignParameters', 'rewriteArrowSymbols', 'alignParameters', 'alignSingleLineCaseStatements', 'compactControlReadability', 'compactStringConcatenation', 'doubleIndentClassDeclaration', 'formatXml', 'indentLocalDefs', 'indentPackageBlocks', 'indentWithTabs', 'multilineScaladocCommentsStartOnFirstLine', 'placeScaladocAsterisksBeneathSecondAsterisk', 'preserveDanglingCloseParenthesis', 'preserveSpaceBeforeArguments', 'rewriteArrowSymbols', 'spaceBeforeColon', 'spaceInsideBrackets', 'spaceInsideParentheses', 'spacesWithinPatternBinders']
+booleanPreferences.each do |o|
+  [['+', true], ['-', false]].each do |arr|
+    if ARGV.delete(arr[0] + o) != nil
+      options[o] = arr[1]
+    end
+  end
+end
 opts = OptionParser.new do |opts|
+  opts.on("--url=URL", "Alternative server url (default: #{DEFAULT_URL})") do |url|
+    options['url'] = url
+  end
   [
     [nil, 'stdin', "Read Scala source from standard input"],
     [nil, 'stdout', "Write the formatted output to standard output"],
@@ -53,16 +66,9 @@ opts = OptionParser.new do |opts|
       options[arr[1]] = true
     end
   end
-  # [
-  #   ['rewriteArrowSymbols', "Replace arrow tokens with unicode equivalents"],
-  #   ['alignParameters', "Align parameters on different lines in the same column"]
-  # ].each do |arr|
-  #   [["+", "Enable", true], ["-", "Disable", false]].each do |brr|
-  #     opts.on(brr[0] + arr[0], brr[1] + " " + arr[1]) do
-  #       options[arr[0]] = brr[2]
-  #     end
-  #   end
-  # end
+  opts.on("--indentSpaces=SPACES", "Set Number of spaces to use for indentation") do |spaces|
+    options['indentSpaces'] = spaces
+  end
 end
 
 begin
@@ -73,12 +79,11 @@ rescue OptionParser::InvalidOption => e
 end
 
 if options['help']
-  puts "Show help (TODO)"
   puts <<-EOS
+#{opts}
 Examples:
   scalariver +spaceBeforeColon -alignParameters -indentSpaces=2 foo.scala
-  scalariver +rewriteArrowSymbols --test --recurse .
-  echo 'class A ( n  :Int )' | scalariver --stdin
+  echo 'class A ( n  :Int )' | scalariver --stdin --stdout -f
   EOS
   exit
 end
@@ -99,11 +104,11 @@ request = Net::HTTP::Post.new("/")
 params = options
 params['source'] = source
 request.set_form_data(params)
-response = http(SCALARIVER_URL, request)
+response = http(URI(options['url']), request)
 case response.code
 when "200"
   print response.body if options['stdout']
-  if source != response.body and !options['stdout']
+  if !options['stdin'] and !options['stdout'] and source != response.body
     File.open(source_file, 'w') do |f|
       f.write response.body
     end

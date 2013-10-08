@@ -19,13 +19,13 @@ private[scalariver] final class Format(req: HReqData) {
 
     def preferences = new FormattingPreferences(
       AllPreferences.preferencesByKey map {
-        case (key, descriptor) => {
+        case (key, descriptor) ⇒ {
           val setting = descriptor match {
-            case desc: BooleanPreferenceDescriptor =>
+            case desc: BooleanPreferenceDescriptor ⇒
               Some(if (req.param(key).isDefined) "true" else "false")
-            case desc => req param key
+            case desc ⇒ req param key
           }
-          val parsed = setting flatMap { v =>
+          val parsed = setting flatMap { v ⇒
             descriptor.preferenceType.parseValue(v).right.toOption
           } getOrElse descriptor.defaultValue
           descriptor -> parsed

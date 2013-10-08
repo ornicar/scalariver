@@ -8,18 +8,18 @@ By using a client/server architecture, we can fix it.
 ### Benchmark
 
 ```sh
-time java -jar ~/bin/scalariform.jar src/main/scala/Scalariver.scala --stdout  
-1.99s user 0.07s system 128% cpu 1.603 total
+time java -jar ~/bin/scalariform.jar src/main/scala/Scalariver.scala
+3.09s user 0.08s system 129% cpu 2.456 total
 ```
-Scalariform CLI = 1.6 seconds
+Scalariform CLI = 3.09 seconds
 
 ```sh
 time ./scalariver src/main/scala/Scalariver.scala
-0.06s user 0.00s system 98% cpu 0.064 total
+0.07s user 0.03s system 84% cpu 0.153 total
 ```
-Scalariver CLI = 0.06 seconds
+Scalariver CLI = 0.07 seconds
 
-Scalariver is 25 times faster than scalariform.
+Scalariver is 44 times faster than scalariform \o/ Bye bye, JVM warmup.
 
 ### Command line client
 
@@ -35,11 +35,11 @@ sends an HTTP request to the scalariform server,
 and writes the formatted code to the file.
 
 The client script tries to support all scalariform options.
-For example, this will read from stdin and 
+For example, this will use a custom server URL, read from stdin and 
 write to stdout even if the source cannot be parsed correctly:
 
 ```sh
-echo src/main/scala/Scalariver.scala | ./scalariver -stdin -stdout -f
+echo src/main/scala/Scalariver.scala | ./scalariver --url=http://localhost:8098 --stdin --stdout -f
 ```
 
 ### Using your private server
@@ -65,8 +65,24 @@ export SCALARIVER_URL="http://localhost:8098"
 
 ### Use with Vim
 
+Simplest integration:
+
 ```vim
 au BufEnter *.scala setl formatprg=/path/to/scalariver\ --stdin\ --stdout\ -f
+```
+
+Exemple with custom server URL and formatting preferences:
+
+```vim
+au BufEnter *.scala setl formatprg=/path/to/scalariver\ --url=http://localhost\:8098\ --stdin\ --stdout\ -f\ +rewriteArrowSymbols\ +alignSingleLineCaseStatements\ +compactControlReadability\ +doubleIndentClassDeclaration\ +rewriteArrowSymbols\ +preserveDanglingCloseParenthesis
+```
+
+Bonus:
+
+```
+" Format the whole file by pressing <leader>f
+" This sets a marker on y, goes to the top, formats to the bottom, and returns to the y marker
+nmap <leader>f mygggqG'y
 ```
 
 ### Server HTTP API
@@ -84,6 +100,7 @@ name | description | default
 **source** | scala source code to format | ""
 **scalaVersion** | scala version of the source code | 2.10
 **initialIndentLevel** | indent level to add to every line | 0
+**forceOutput** | print the source unchanged if it cannot be parsed correctly | false
 
 And all [scalariform formatting preference options](https://github.com/mdr/scalariform#preferences).
 
