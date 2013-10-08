@@ -34,13 +34,14 @@ By default, this `scalariver` script takes a file argument,
 sends an HTTP request to the scalariform server,
 and writes the formatted code to the file.
 
-The client script tries to support all scalariform options.
 For example, this will use a custom server URL, read from stdin and 
 write to stdout even if the source cannot be parsed correctly:
 
 ```sh
 echo src/main/scala/Scalariver.scala | ./scalariver --url=http://localhost:8098 --stdin --stdout -f
 ```
+
+The client script supports all scalariform options.
 
 ### Using your private server
 
@@ -57,10 +58,13 @@ sbt run 8098
 
 It's enough to get the server running on [http://localhost:8098.](http://localhost:8098).
 
-Now tell the `scalariver` client to use your private server:
-
 ```sh
-export SCALARIVER_URL="http://localhost:8098"
+./scalariver --url=http://localhost:8098 src/main/scala/Scalariver.scala
+```
+
+To make the url change permanent for the scalariver client, add this to your .bashrc/.zshrc:
+```sh
+export SCALARIVER_URL=http://localhost:8098
 ```
 
 ### Use with Vim
@@ -79,11 +83,15 @@ au BufEnter *.scala setl formatprg=/path/to/scalariver\ --url=http://localhost\:
 
 Bonus:
 
-```
+```vim
 " Format the whole file by pressing <leader>f
 " This sets a marker on y, goes to the top, formats to the bottom, and returns to the y marker
 nmap <leader>f mygggqG'y
 ```
+
+### Web UI
+
+The server exposes also its functionality through a web form: [http://river.scalex.org](http://river.scalex.org)
 
 ### Server HTTP API
 
@@ -107,7 +115,7 @@ And all [scalariform formatting preference options](https://github.com/mdr/scala
 More complex example:
 
 ```sh
-curl scalariver.org \
+curl river.scalex.org \
   --data-urlencode source@src/main/scala/Scalariver.scala \
   -d scalaVersion=2.11 \
   -d rewriteArrowSymbols=true
