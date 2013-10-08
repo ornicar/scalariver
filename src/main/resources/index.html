@@ -12,18 +12,23 @@
 <div id="wrap">
   <div class="container">
     <div class="page-header">
-      <h1>scalariver</h1>
-      <p class="lead">Scalariform HTTP server, for faster formatting</p>
+      <h1>
+        Scalariver
+        <span class="text-muted">Quick scala formatter</span>
+    </h1>
     </div>
     <form role="form" class="form-horizontal form-format" action="/" method="post">
       <div class="row">
         <div class="col-md-7">
           <div class="form-group">
             <label for="source">Source code</label>
-            <textarea class="form-control source" rows=23 name="source"></textarea>
+            <textarea class="form-control source" name="source"></textarea>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Format</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block normal">Format</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block success">Success!</button>
+            <button type="submit" class="btn btn-warning btn-lg btn-block error">Error</button>
+            <pre class="error-message error"></pre>
           </div>
         </div>
         <div class="col-md-5">
@@ -114,5 +119,7 @@
     </p>
   </div>
 </div>
+<script src="deps.min.js"></script>
+<script src="main.js"></script>
 </body>
 </html>

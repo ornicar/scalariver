@@ -31,4 +31,25 @@ form.form-format {
 textarea.source {
   font-family: monospace;
   font-size: 12px;
+  height: 500px;
+}
+
+form .success, form .error {
+  display: none;
+}
+form.has-success .normal, form.has-error .normal {
+  display: none;
+}
+form.has-success .success {
+  display: block;
+}
+form.has-error .error {
+  display: block;
+}
+form .error-message {
+  margin-top: 10px;
+}
+
+form .btn-block {
+  margin-top: 0 !important;
 }
