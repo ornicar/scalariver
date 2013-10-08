@@ -31,32 +31,37 @@ chmod +x scalariver
 ```
 
 By default, this `scalariver` script takes a file argument,
-sends an HTTP request to the scalariform server,
-and writes the formatted code to the file.
+sends an HTTP request to the server at http://river.scalex.org,
+then writes the formatted code to the file.
 
-For example, this will use a custom server URL, read from stdin and 
-write to stdout even if the source cannot be parsed correctly:
+The client script supports standard scalariform options.
+
+For example, this line will use some formatting preferences, 
+read from stdin and write to stdout even if 
+the source cannot be parsed correctly:
 
 ```sh
-echo src/main/scala/Scalariver.scala | ./scalariver --url=http://localhost:8098 --stdin --stdout -f
+echo src/main/scala/Scalariver.scala | ./scalariver +rewriteArrowSymbols --indentSpaces=4 --stdin --stdout -f
 ```
-
-The client script supports all scalariform options.
 
 ### Using your private server
 
-There is an instance of scalariver deployed on http://river.scalex.org for everybody's use.
-By default, the `scalariver` CLI client will use it. 
+Everybody can use [http://river.scalex.org](http://river.scalex.org) API freely.
+By default, the `scalariver` CLI client uses it. 
 
-If you care about code privacy, or are looking for better response time,
+But if you need to format offline, 
+or if you feel uncomfortable about 
+having your code sent to the Internet, 
 then you should run your own scalariver instance.
+
 Clone this repository, then run:
 
 ```sh
 sbt run 8098
 ```
 
-It's enough to get the server running on [http://localhost:8098.](http://localhost:8098).
+It's enough to get the server running on [http://localhost:8098](http://localhost:8098).
+You can now specify the new server url to the client:
 
 ```sh
 ./scalariver --url=http://localhost:8098 src/main/scala/Scalariver.scala
@@ -91,14 +96,14 @@ nmap <leader>f mygggqG'y
 
 ### Web UI
 
-The server exposes also its functionality through a web form: [http://river.scalex.org](http://river.scalex.org)
+The server also exposes its functionality through a web form: [http://river.scalex.org](http://river.scalex.org)
 
 ### Server HTTP API
 
 The only entry point is a `POST` request on `/`.
 
 ```sh
-curl river.scalex.org -d source="class Foo { }"
+curl river.scalex.org -d source="class A ( n  :Int )"
 ```
 
 It accepts the following optional parameters:
@@ -118,7 +123,8 @@ More complex example:
 curl river.scalex.org \
   --data-urlencode source@src/main/scala/Scalariver.scala \
   -d scalaVersion=2.11 \
-  -d rewriteArrowSymbols=true
+  -d rewriteArrowSymbols=true \
+  -d indentSpaces=4
 ```
 
 ### Credits
