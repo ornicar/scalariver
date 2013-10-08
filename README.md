@@ -21,7 +21,7 @@ Scalariver CLI = 0.06 seconds
 
 Scalariver is 25 times faster than scalariform.
 
-### Try it
+### Command line client
 
 Get the client, make it executable and run it on some scala file.
 ```sh
@@ -30,14 +30,16 @@ chmod +x scalariver
 ./scalariver src/main/scala/Scalariver.scala
 ```
 
-This `scalariver` script takes a file argument,
+By default, this `scalariver` script takes a file argument,
 sends an HTTP request to the scalariform server,
-and prints the formatted scala code to stdout.
+and writes the formatted code to the file.
 
-If no file argument is given, scalariven will read from stdin:
+The client script tries to support all scalariform options.
+For example, this will read from stdin and 
+write to stdout even if the source cannot be parsed correctly:
 
 ```sh
-echo src/main/scala/Scalariver.scala | ./scalariver
+echo src/main/scala/Scalariver.scala | ./scalariver -stdin -stdout -f
 ```
 
 ### Using your private server
@@ -63,14 +65,8 @@ export SCALARIVER_URL="http://localhost:8098"
 
 ### Use with Vim
 
-Using curl and HTTP API
 ```vim
-nmap <leader>f :% !curl -s river.scalex.org --data-urlencode source@%<cr>
-```
-
-**Or** using the scalariver client
-```vim
-nmap <leader>F :% !/path/to/scalariver %<cr>
+au BufEnter *.scala setl formatprg=/path/to/scalariver\ --stdin\ --stdout\ -f
 ```
 
 ### Server HTTP API
