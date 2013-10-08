@@ -46,7 +46,8 @@ opts = OptionParser.new do |opts|
     [nil, 'stdin', "Read Scala source from standard input"],
     [nil, 'stdout', "Write the formatted output to standard output"],
     ['f', 'forceOutput', "If using --stdout, print the source unchanged if it cannot be parsed correctly."],
-    ['q', 'quiet', "Work quietly"]
+    ['q', 'quiet', "Work quietly"],
+    ['h', 'help', "Show help"]
   ].each do |arr|
     opts.on(arr[0] == nil ? nil : '-' + arr[0], "--#{arr[1]}", arr[2]) do
       options[arr[1]] = true
@@ -63,13 +64,31 @@ opts = OptionParser.new do |opts|
   #   end
   # end
 end
-opts.parse!
+
+begin
+  opts.parse!
+rescue OptionParser::InvalidOption => e
+  puts "Error: #{e.message}"
+  options['help'] = true
+end
+
+if options['help']
+  puts "Show help (TODO)"
+  puts <<-EOS
+Examples:
+  scalariver +spaceBeforeColon -alignParameters -indentSpaces=2 foo.scala
+  scalariver +rewriteArrowSymbols --test --recurse .
+  echo 'class A ( n  :Int )' | scalariver --stdin
+  EOS
+  exit
+end
 
 if options['stdin']
   source = STDIN.read
 else
   if ARGV.empty?
-    raise ArgumentError, "No file! Use --stdin to read from input"
+    puts "Error: Must specify a file or use --stdin (run with --help for full options)"
+    exit 1
   else
     source_file = File.expand_path(ARGV[0])
     source = File.read(source_file)
