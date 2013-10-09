@@ -10,7 +10,10 @@ private[scalariver] final class Format(req: HReqData) {
 
   def forceOutput = (req softParam "forceOutput") == "true"
 
-  def source = req softParam "source"
+  def source = {
+    req softParam "source"
+    // horrible workaround for https://github.com/gnieh/tiscaf/issues/7
+  } drop 4
 
   def apply: Try[String] = {
 

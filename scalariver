@@ -100,6 +100,9 @@ else
   end
 end
 
+# horrible workaround for https://github.com/gnieh/tiscaf/issues/7
+source = "//%\n" + source
+
 request = Net::HTTP::Post.new("/")
 params = options
 params['source'] = source
