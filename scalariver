@@ -89,19 +89,19 @@ Examples:
 end
 
 if options['stdin']
-  source = STDIN.read
+  original_source = STDIN.read
 else
   if ARGV.empty?
     puts "Error: Must specify a file or use --stdin (run with --help for full options)"
     exit 1
   else
     source_file = File.expand_path(ARGV[0])
-    source = File.read(source_file)
+    original_source = File.read(source_file)
   end
 end
 
 # horrible workaround for https://github.com/gnieh/tiscaf/issues/7
-source = "//%\n" + source
+source = "//%\n" + original_source
 
 request = Net::HTTP::Post.new("/")
 params = options
@@ -111,13 +111,13 @@ response = http(URI(options['url']), request)
 case response.code
 when "200"
   print response.body if options['stdout']
-  if !options['stdin'] and !options['stdout'] and source != response.body
+  if !options['stdin'] and !options['stdout'] and original_source != response.body
     File.open(source_file, 'w') do |f|
       f.write response.body
     end
     print "Reformated #{source_file}" if !options['quiet']
   end
 else
-  print response.body if options['stdout'] and options['forceOutput']
+  print original_source if options['stdout'] and options['forceOutput']
   $stderr.puts response.body if $stdin.tty?
 end

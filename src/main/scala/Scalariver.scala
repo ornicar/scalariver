@@ -5,7 +5,7 @@ import tiscaf._
 
 object ScalariverServer extends HServer with App {
 
-  def port = args.toIndexedSeq lift 0 flatMap { p =>
+  def port = args.toIndexedSeq lift 0 flatMap { p ⇒
     Try(p.toInt).toOption
   } getOrElse 8098
 
@@ -38,24 +38,16 @@ object ScalariformApp extends HApp {
 object ScalariformLet extends HSimpleLet {
 
   def act(talk: HTalk) {
-    val f = new Format(talk.req) 
+    val f = new Format(talk.req)
+    def write(bytes: Array[Byte], status: HStatus.Value) = talk
+      .setContentType("text/plain; charset=UTF-8")
+      .setCharacterEncoding("UTF-8")
+      .setContentLength(bytes.size)
+      .setStatus(status)
+      .write(bytes)
     f.apply match {
-      case Success(x) ⇒ {
-        val bytes = x getBytes "UTF-8"
-        talk
-        .setContentType("text/plain; charset=UTF-8")
-        .setCharacterEncoding("UTF-8")
-        .setContentLength(bytes.size)
-        .setStatus(HStatus.OK)
-        .write(bytes)
-      }
-      case Failure(e) ⇒ {
-        val out = if (f.forceOutput) f.source else e.getMessage
-        talk
-        .setStatus(HStatus.BadRequest)
-        .setContentLength(out.length)
-        .write(out)
-      }
+      case Success(x) ⇒ write(x getBytes "UTF-8", HStatus.OK)
+      case Failure(e) ⇒ write(e.getMessage getBytes "UTF-8", HStatus.BadRequest)
     }
   }
 }
