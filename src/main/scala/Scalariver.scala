@@ -12,7 +12,7 @@ object ScalariverServer extends HServer with App {
   val apps = Seq(ScalariformApp, StaticApp)
   val ports = Set(port)
   override protected val name = "scalariver"
-  override protected val maxPostDataLength = 1024 * 8
+  override protected val maxPostDataLength = 1024 * 1024
   // do not start the stop thread
   override protected def startStopListener {}
 
