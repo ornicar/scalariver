@@ -108,13 +108,13 @@ response = http(URI(options['url']), request)
 case response.code
 when "200"
   print response.body if options['stdout']
-  if !options['stdin'] and !options['stdout'] and original_source != response.body
+  if !options['stdin'] and !options['stdout'] and source != response.body
     File.open(source_file, 'w') do |f|
       f.write response.body
     end
     print "Reformated #{source_file}" if !options['quiet']
   end
 else
-  print original_source if options['stdout'] and options['forceOutput']
+  print source if options['stdout'] and options['forceOutput']
   $stderr.puts response.body if $stdin.tty?
 end
