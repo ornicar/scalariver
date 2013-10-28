@@ -9,7 +9,7 @@ object ScalariverProject extends Build {
     scalaVersion := "2.10.3",
     resourceDirectories in Compile := List(),
     libraryDependencies := Seq(
-      "org.gnieh" %% "tiscaf" % "0.8-SNAPSHOT",
+      "org.gnieh" %% "tiscaf" % "0.8",
       "org.scalariform" %% "scalariform" % "0.1.4"),
       resolvers := Seq(
         "sonatype" at "http://oss.sonatype.org/content/repositories/releases",
