@@ -8,10 +8,7 @@ import tiscaf._
 
 private[scalariver] final class Format(req: HReqData) {
 
-  def source = {
-    req softParam "source"
-    // horrible workaround for https://github.com/gnieh/tiscaf/issues/7
-  } drop 4
+  def source = req softParam "source"
 
   def apply: Try[String] = {
 

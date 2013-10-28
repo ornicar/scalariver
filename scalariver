@@ -51,8 +51,8 @@ booleanPreferences.each do |o|
     end
   end
 end
-opts = OptionParser.new do |opts|
-  opts.on("--url=URL", "Alternative server url (default: #{DEFAULT_URL})") do |url|
+opts = OptionParser.new do |o|
+  o.on("--url=URL", "Alternative server url (default: #{DEFAULT_URL})") do |url|
     options['url'] = url
   end
   [
@@ -62,11 +62,11 @@ opts = OptionParser.new do |opts|
     ['q', 'quiet', "Work quietly"],
     ['h', 'help', "Show help"]
   ].each do |arr|
-    opts.on(arr[0] == nil ? nil : '-' + arr[0], "--#{arr[1]}", arr[2]) do
+    o.on(arr[0] == nil ? nil : '-' + arr[0], "--#{arr[1]}", arr[2]) do
       options[arr[1]] = true
     end
   end
-  opts.on("--indentSpaces=SPACES", "Set Number of spaces to use for indentation") do |spaces|
+  o.on("--indentSpaces=SPACES", "Set Number of spaces to use for indentation") do |spaces|
     options['indentSpaces'] = spaces
   end
 end
@@ -89,19 +89,16 @@ Examples:
 end
 
 if options['stdin']
-  original_source = STDIN.read
+  source = STDIN.read
 else
   if ARGV.empty?
     puts "Error: Must specify a file or use --stdin (run with --help for full options)"
     exit 1
   else
     source_file = File.expand_path(ARGV[0])
-    original_source = File.read(source_file)
+    source = File.read(source_file)
   end
 end
-
-# horrible workaround for https://github.com/gnieh/tiscaf/issues/7
-source = "//%\n" + original_source
 
 request = Net::HTTP::Post.new("/")
 params = options
