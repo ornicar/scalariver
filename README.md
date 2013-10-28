@@ -57,7 +57,7 @@ then you should run your own scalariver instance.
 Clone this repository, then run:
 
 ```sh
-sbt run 8098
+sbt "run 8098"
 ```
 
 It's enough to get the server running on [http://localhost:8098](http://localhost:8098).
