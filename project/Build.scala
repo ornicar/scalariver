@@ -5,7 +5,7 @@ object ScalariverProject extends Build {
   val scalariver = Project("scalariver", file(".")) settings (
     organization := "com.github.ornicar",
     name := "scalariver",
-    version := "0.1",
+    version := "1.0",
     scalaVersion := "2.10.3",
     resourceDirectories in Compile := List(),
     libraryDependencies := Seq(
