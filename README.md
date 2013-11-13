@@ -72,7 +72,9 @@ To make the url change permanent for the scalariver client, add this to your .ba
 export SCALARIVER_URL=http://localhost:8098
 ```
 
-### Use with Vim
+### Integration
+
+#### Use with Vim
 
 Simplest integration:
 
@@ -93,6 +95,15 @@ Bonus:
 " This sets a marker on y, goes to the top, formats to the bottom, and returns to the y marker
 nmap <leader>f mygggqG'y
 ```
+
+#### More wanted!
+
+Do you use your favorite text editor? Wanna integrate scalariver? Cool.
+
+You need to find a way to send the content of 
+the current file to an external program,
+then replace the file content with that program output.
+Sounds easy, right? Please share your work!
 
 ### Web UI
 
