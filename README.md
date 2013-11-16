@@ -74,7 +74,7 @@ export SCALARIVER_URL=http://localhost:8098
 
 ### Integration
 
-#### Use with Vim
+#### Vim
 
 Simplest integration:
 
@@ -95,6 +95,10 @@ Bonus:
 " This sets a marker on y, goes to the top, formats to the bottom, and returns to the y marker
 nmap <leader>f mygggqG'y
 ```
+
+#### Sublime Text
+
+Check the [scalariver sublime text plugin](https://github.com/dohzya/sublime_scalariver) created by [dohzya](https://github.com/dohzya)
 
 #### More wanted!
 
