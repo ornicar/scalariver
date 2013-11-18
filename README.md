@@ -54,13 +54,13 @@ or if you feel uncomfortable about
 having your code sent to the Internet, 
 then you should run your own scalariver instance.
 
-Clone this repository, then run:
-
 ```sh
-sbt "run 8098"
+wget http://download.river.scalex.org/scalariver-1.0.jar
+java -jar scalariver-1.0.jar
 ```
 
-It's enough to get the server running on [http://localhost:8098](http://localhost:8098).
+**Done!**
+
 You can now specify the new server url to the client:
 
 ```sh
@@ -71,6 +71,18 @@ To make the url change permanent for the scalariver client, add this to your .ba
 ```sh
 export SCALARIVER_URL=http://localhost:8098
 ```
+
+#### Listen to a custom port
+
+```sh
+java -jar scalariver-1.0.jar 12345 # listen to port 12345
+```
+
+Scalariver now listens to port 12345
+
+#### Develop
+
+To modify or contribute to scalariver, clone this repository and launch sbt. `sbt run 12345` will start scalariver on port 12345.
 
 ### Integration
 
