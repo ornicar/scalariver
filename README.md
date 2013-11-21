@@ -121,6 +121,12 @@ the current file to an external program,
 then replace the file content with that program output.
 Sounds easy, right? Please share your work!
 
+#### Alternatives
+
+Another way to run scalariform without the JVM warmup is to integrate it with SBT.
+
+See these project skeletons for [playframework 2.1.5](https://gist.github.com/Timshel/7580837) or [playframework 2.2.1](https://gist.github.com/Timshel/7581175).
+
 ### Web UI
 
 The server also exposes its functionality through a web form: [http://river.scalex.org](http://river.scalex.org)
