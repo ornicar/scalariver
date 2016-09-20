@@ -1,6 +1,6 @@
 package com.github.ornicar.scalariver
 
-import scala.util.{Try, Success, Failure}
+import scala.util.{ Try, Success, Failure }
 import scalariform._
 import scalariform.formatter.preferences._
 import scalariform.formatter.ScalaFormatter
@@ -28,8 +28,7 @@ private[scalariver] final class Format(req: HReqData) {
           } getOrElse descriptor.defaultValue
           descriptor -> parsed
         }
-      } toMap
-    )
+      } toMap)
 
     Try(ScalaFormatter.format(
       source = source,
