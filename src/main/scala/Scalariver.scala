@@ -1,6 +1,6 @@
 package com.github.ornicar.scalariver
 
-import scala.util.{ Try, Success, Failure }
+import scala.util.{Try, Success, Failure}
 import tiscaf._
 
 object ScalariverServer extends HServer with App {
@@ -13,13 +13,11 @@ object ScalariverServer extends HServer with App {
   val ports = Set(port)
   override protected val name = "scalariver"
   override protected val maxPostDataLength = 1024 * 1024
-  // do not start the stop thread
-  override protected def startStopListener {}
+
+  // // do not start the stop thread
+  // override protected def startStopListener {}
 
   start
-  println("press enter to stop...")
-  Console.readLine
-  stop
 }
 
 /** The application that serves the pages */
@@ -37,7 +35,14 @@ object ScalariformApp extends HApp {
 /** Serves the current server time */
 object ScalariformLet extends HSimpleLet {
 
+  def memory = {
+    Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
+  } / 1024 / 1024
+
+  def now = System.currentTimeMillis
+
   def act(talk: HTalk) {
+    val startAt = now
     val f = new Format(talk.req)
     def write(bytes: Array[Byte], status: HStatus.Value) = talk
       .setContentType("text/plain; charset=UTF-8")
@@ -46,7 +51,9 @@ object ScalariformLet extends HSimpleLet {
       .setStatus(status)
       .write(bytes)
     f.apply match {
-      case Success(x) ⇒ write(x getBytes "UTF-8", HStatus.OK)
+      case Success(x) ⇒
+        println(s"${x.size / 1024}kb ${now - startAt}ms ${memory}M")
+        write(x getBytes "UTF-8", HStatus.OK)
       case Failure(e) ⇒ write(e.getMessage getBytes "UTF-8", HStatus.BadRequest)
     }
   }

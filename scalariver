@@ -43,7 +43,7 @@ end
 
 options = {}
 options['url'] = ENV["SCALARIVER_URL"] || DEFAULT_URL
-booleanPreferences = [ 'alignParameters', 'rewriteArrowSymbols', 'alignParameters', 'alignSingleLineCaseStatements', 'compactControlReadability', 'compactStringConcatenation', 'doubleIndentClassDeclaration', 'formatXml', 'indentLocalDefs', 'indentPackageBlocks', 'indentWithTabs', 'multilineScaladocCommentsStartOnFirstLine', 'placeScaladocAsterisksBeneathSecondAsterisk', 'preserveDanglingCloseParenthesis', 'preserveSpaceBeforeArguments', 'rewriteArrowSymbols', 'spaceBeforeColon', 'spaceInsideBrackets', 'spaceInsideParentheses', 'spacesWithinPatternBinders']
+booleanPreferences = [ 'alignParameters', 'rewriteArrowSymbols', 'alignParameters', 'alignSingleLineCaseStatements', 'compactControlReadability', 'compactStringConcatenation', 'doubleIndentClassDeclaration', 'formatXml', 'indentLocalDefs', 'indentPackageBlocks', 'indentWithTabs', 'multilineScaladocCommentsStartOnFirstLine', 'placeScaladocAsterisksBeneathSecondAsterisk', 'preserveDanglingCloseParenthesis', 'preserveSpaceBeforeArguments', 'rewriteArrowSymbols', 'spaceBeforeColon', 'spaceInsideBrackets', 'spaceInsideParentheses', 'spacesWithinPatternBinders', 'spacesAroundMultiImports']
 booleanPreferences.each do |o|
   [['+', true], ['-', false]].each do |arr|
     if ARGV.delete(arr[0] + o) != nil
@@ -68,6 +68,9 @@ opts = OptionParser.new do |o|
   end
   o.on("--indentSpaces=SPACES", "Set Number of spaces to use for indentation") do |spaces|
     options['indentSpaces'] = spaces
+  end
+  o.on("--danglingCloseParenthesis=(Prevent|Force|Preserve)", "If Force, any closing parentheses will be set to dangle") do |mode|
+    options['danglingCloseParenthesis'] = mode
   end
 end
 

@@ -1,6 +1,6 @@
 package com.github.ornicar.scalariver
 
-import scala.util.{ Try, Success, Failure }
+import scala.util.{Try, Success, Failure}
 import scalariform._
 import scalariform.formatter.preferences._
 import scalariform.formatter.ScalaFormatter
@@ -12,10 +12,10 @@ private[scalariver] final class Format(req: HReqData) {
 
   def apply: Try[String] = {
 
-    def scalaVersion = req param "scalaVersion" getOrElse "2.10"
-    def initialIndentLevel = req asInt "initialIndentLevel" getOrElse 0
+    val scalaVersion = req param "scalaVersion" getOrElse "2.11"
+    val initialIndentLevel = req asInt "initialIndentLevel" getOrElse 0
 
-    def preferences = new FormattingPreferences(
+    val preferences = new FormattingPreferences(
       AllPreferences.preferencesByKey map {
         case (key, descriptor) ⇒ {
           val setting = descriptor match {
@@ -28,12 +28,14 @@ private[scalariver] final class Format(req: HReqData) {
           } getOrElse descriptor.defaultValue
           descriptor -> parsed
         }
-      } toMap)
+      } toMap
+    )
 
     Try(ScalaFormatter.format(
       source = source,
       scalaVersion = scalaVersion,
       formattingPreferences = preferences,
-      initialIndentLevel = initialIndentLevel))
+      initialIndentLevel = initialIndentLevel
+    ))
   }
 }
