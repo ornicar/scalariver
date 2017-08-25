@@ -36,8 +36,8 @@ then writes the formatted code to the file.
 
 The client script supports standard scalariform options.
 
-For example, this line will use some formatting preferences, 
-read from stdin and write to stdout even if 
+For example, this line will use some formatting preferences,
+read from stdin and write to stdout even if
 the source cannot be parsed correctly:
 
 ```sh
@@ -47,11 +47,11 @@ echo src/main/scala/Scalariver.scala | ./scalariver +rewriteArrowSymbols --inden
 ### Using your private server
 
 Everybody can use [http://river.scalex.org](http://river.scalex.org) API freely.
-By default, the `scalariver` CLI client uses it. 
+By default, the `scalariver` CLI client uses it.
 
-But if you need to format offline, 
-or if you feel uncomfortable about 
-having your code sent to the Internet, 
+But if you need to format offline,
+or if you feel uncomfortable about
+having your code sent to the Internet,
 then you should run your own scalariver instance.
 
 ```sh
@@ -97,7 +97,7 @@ au BufEnter *.scala setl formatprg=/path/to/scalariver\ --stdin\ --stdout\ -f
 Exemple with custom server URL and formatting preferences:
 
 ```vim
-au BufEnter *.scala setl formatprg=/path/to/scalariver\ --url=http://localhost\:8098\ --stdin\ --stdout\ -f\ +rewriteArrowSymbols\ +alignSingleLineCaseStatements\ +compactControlReadability\ +doubleIndentClassDeclaration\ +rewriteArrowSymbols\ +preserveDanglingCloseParenthesis
+au BufEnter *.scala setl formatprg=/path/to/scalariver\ --url=http://localhost\:8098\ --stdin\ --stdout\ -f\ +rewriteArrowSymbols\ +alignSingleLineCaseStatements\ +compactControlReadability\ +doubleIndentConstructorArguments\ +rewriteArrowSymbols
 ```
 
 Bonus:
@@ -116,7 +116,7 @@ Check the [scalariver sublime text plugin](https://github.com/dohzya/sublime_sca
 
 Do you use your favorite text editor? Wanna integrate scalariver? Cool.
 
-You need to find a way to send the content of 
+You need to find a way to send the content of
 the current file to an external program,
 then replace the file content with that program output.
 Sounds easy, right? Please share your work!

@@ -43,14 +43,6 @@ end
 
 options = {}
 options['url'] = ENV["SCALARIVER_URL"] || DEFAULT_URL
-booleanPreferences = [ 'alignParameters', 'rewriteArrowSymbols', 'alignParameters', 'alignSingleLineCaseStatements', 'compactControlReadability', 'compactStringConcatenation', 'doubleIndentClassDeclaration', 'formatXml', 'indentLocalDefs', 'indentPackageBlocks', 'indentWithTabs', 'multilineScaladocCommentsStartOnFirstLine', 'placeScaladocAsterisksBeneathSecondAsterisk', 'preserveDanglingCloseParenthesis', 'preserveSpaceBeforeArguments', 'rewriteArrowSymbols', 'spaceBeforeColon', 'spaceInsideBrackets', 'spaceInsideParentheses', 'spacesWithinPatternBinders', 'spacesAroundMultiImports']
-booleanPreferences.each do |o|
-  [['+', true], ['-', false]].each do |arr|
-    if ARGV.delete(arr[0] + o) != nil
-      options[o] = arr[1]
-    end
-  end
-end
 opts = OptionParser.new do |o|
   o.on("--url=URL", "Alternative server url (default: #{DEFAULT_URL})") do |url|
     options['url'] = url
@@ -66,12 +58,6 @@ opts = OptionParser.new do |o|
       options[arr[1]] = true
     end
   end
-  o.on("--indentSpaces=SPACES", "Set Number of spaces to use for indentation") do |spaces|
-    options['indentSpaces'] = spaces
-  end
-  o.on("--danglingCloseParenthesis=(Prevent|Force|Preserve)", "If Force, any closing parentheses will be set to dangle") do |mode|
-    options['danglingCloseParenthesis'] = mode
-  end
 end
 
 begin
@@ -85,7 +71,7 @@ if options['help']
   puts <<-EOS
 #{opts}
 Examples:
-  scalariver +spaceBeforeColon -alignParameters -indentSpaces=2 foo.scala
+  scalariver foo.scala
   echo 'class A ( n  :Int )' | scalariver --stdin --stdout -f
   EOS
   exit
